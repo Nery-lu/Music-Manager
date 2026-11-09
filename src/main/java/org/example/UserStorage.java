@@ -27,8 +27,12 @@ public class UserStorage {
 
     // Loads the users from the JSON file
     public static Map<String, User> loadUsers() {
+        return loadUsers(USERS_FILE);
+    }
 
-        if (!Files.exists(USERS_FILE)) {
+    static Map<String, User> loadUsers(Path usersFile) {
+
+        if (!Files.exists(usersFile)) {
             return new HashMap<>();
         }
 
@@ -36,7 +40,7 @@ public class UserStorage {
                 new TypeToken<Map<String, User>>() {}.getType();
 
         try (Reader reader = Files.newBufferedReader(
-                USERS_FILE, StandardCharsets.UTF_8)) {
+                usersFile, StandardCharsets.UTF_8)) {
 
             Map<String, User> users =
                     GSON.fromJson(reader, usersType);
@@ -52,12 +56,16 @@ public class UserStorage {
 
     // Saves the current users to the JSON file
     public static void saveUsers(Map<String, User> users) {
+        saveUsers(users, USERS_FILE);
+    }
+
+    static void saveUsers(Map<String, User> users, Path usersFile) {
 
         try {
-            Files.createDirectories(USERS_FILE.getParent());
+            Files.createDirectories(usersFile.getParent());
 
             try (Writer writer = Files.newBufferedWriter(
-                    USERS_FILE, StandardCharsets.UTF_8)) {
+                    usersFile, StandardCharsets.UTF_8)) {
 
                 GSON.toJson(users, writer);
             }

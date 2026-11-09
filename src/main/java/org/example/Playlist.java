@@ -53,13 +53,14 @@ public class Playlist {
     }
 
     public boolean removeMusic(String nameMusic) {
-        if (musics.containsKey(nameMusic)) {
-            musics.remove(nameMusic);
-            duration -= musics.get(nameMusic).getDuration();
-            return true;
+        if (!musics.containsKey(nameMusic)) {
+            return false;
         }
 
-        return false;
+        Music removedMusic = musics.get(nameMusic);
+        musics.remove(nameMusic);
+        duration -= removedMusic.getDuration();
+            return true;
     }
 
     public void setDescription(String description) {

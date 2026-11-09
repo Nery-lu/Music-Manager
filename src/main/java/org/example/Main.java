@@ -18,7 +18,7 @@ import java.util.*;
 
 /*    TO DO: Play music             */
 
-/*    Where I'm at now: case 3 on the search menu    */
+/*    Where I'm at now: doing the second test in the Searchtest    */
 
 public class Main {
 
@@ -397,7 +397,7 @@ public class Main {
                     System.out.print("Search for a music: ");
                     String search = scanner.nextLine();
 
-                    Set<Music> musicFound = searchMusic(search, allMusics);
+                    Set<Music> musicFound = MusicSearch.searchMusic(search, allMusics);
 
                     ArrayList<Music> foundList = new ArrayList<>(musicFound);
 
@@ -526,7 +526,7 @@ public class Main {
                         System.out.print("Music: ");
                         String musicFavorite = scanner.nextLine();
 
-                        Set<Music> musicFoundToFavorite = searchMusic(musicFavorite, allMusics);
+                        Set<Music> musicFoundToFavorite = MusicSearch.searchMusic(musicFavorite, allMusics);
                         ArrayList<Music> foundListToFavorite = new ArrayList<>(musicFoundToFavorite);
 
                         if (!foundListToFavorite.isEmpty()) {
@@ -597,113 +597,13 @@ public class Main {
         }
     }
 
-    private static Set<Music> searchMusic(
-            String search,
-            Map<String, ArrayList<Music>> allMusics) {
-
-        Set<Music> musicFound = new HashSet<>();
-
-        if (search == null || search.isBlank()) {
-            return musicFound;
-        }
-
-        for (Map.Entry<String, ArrayList<Music>> entry
-                : allMusics.entrySet()) {
-
-            ArrayList<Music> musics = entry.getValue();
-
-            for (Music music : musics) {
-
-                // Searching in titles: prefix only
-                String title = music.getTitle();
-
-                if (title != null && search.length() <= title.length()) {
-
-                    boolean matches = true;
-
-                    for (int index = 0; index < search.length(); index++) {
-
-                        if (Character.toLowerCase(title.charAt(index))
-                                != Character.toLowerCase(search.charAt(index))) {
-
-                            matches = false;
-                            break;
-                        }
-                    }
-
-                    if (matches) {
-                        musicFound.add(music);
-                    }
-                }
-
-                // Searching in artists: prefix only
-                if (music.getArtist() != null) {
-
-                    for (String artist : music.getArtist()) {
-
-                        if (artist == null
-                                || search.length() > artist.length()) {
-                            continue;
-                        }
-
-                        boolean matches = true;
-
-                        for (int index = 0; index < search.length(); index++) {
-
-                            if (Character.toLowerCase(artist.charAt(index))
-                                    != Character.toLowerCase(search.charAt(index))) {
-
-                                matches = false;
-                                break;
-                            }
-                        }
-
-                        if (matches) {
-                            musicFound.add(music);
-                            break;
-                        }
-                    }
-                }
-
-                // Searching in lyrics: any position
-                String lyrics = music.getLyrics();
-
-                if (lyrics != null
-                        && search.length() <= lyrics.length()) {
-
-                    for (int index = 0;
-                         index <= lyrics.length() - search.length();
-                         index++) {
-
-                        int j = 0;
-
-                        while (j < search.length()
-                                && Character.toLowerCase(
-                                lyrics.charAt(index + j))
-                                == Character.toLowerCase(search.charAt(j))) {
-
-                            j++;
-                        }
-
-                        if (j == search.length()) {
-                            musicFound.add(music);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        return musicFound;
-
-    }
 
     private static void searchMenu(User user, Scanner scanner, Map<String,
             User> users, Map<String, ArrayList<Music>> allMusics) {
         System.out.println("\n\n===Search===");
         System.out.print("Type here your search: ");
         String search = scanner.nextLine();
-        Set<Music> musicFound = new HashSet<>(searchMusic(search, allMusics));
+        Set<Music> musicFound = new HashSet<>(MusicSearch.searchMusic(search, allMusics));
         List<Music> searchResult = new ArrayList<>(musicFound);
 
         if (!searchResult.isEmpty()) {
