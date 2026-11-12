@@ -45,6 +45,15 @@ public class User {
         return false;
     }
 
+    public boolean deletePlaylist(String title) {
+        if(playlists.containsKey(title)) {
+            playlists.remove(title);
+            return true;
+        }
+
+        return false;
+    }
+
     public int getId() {
         return this.id;
     }

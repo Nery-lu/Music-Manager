@@ -12,13 +12,10 @@ import java.util.*;
 /*    has to be corrected later.                                                    */
 
 
-/*    TO DO: SearchMenu, that I just thought about, and then we'll move all this to a data bank,   */
-/*    and this will be implemented inside the userMenu                                             */
+/*    TODO: create the repositories with the methods I will use to modify the database from here   */
+/*    TODO: Play music       */
 
-
-/*    TO DO: Play music             */
-
-/*    Where I'm at now: doing the second test in the Searchtest    */
+/*    Where I'm at now: Developing the methods I will use to communicate with the database, I'm about to start   */
 
 public class Main {
 
@@ -224,9 +221,10 @@ public class Main {
 
             System.out.println("1 - Playlists");
             System.out.println("2 - Create Playlist");
-            System.out.println("3 - Favorite musics");
-            System.out.println("4 - Search");
-            System.out.println("5 - Logout");
+            System.out.println("3 - Delete Playlist");
+            System.out.println("4 - Favorite musics");
+            System.out.println("5 - Search");
+            System.out.println("6 - Logout");
             System.out.print("Option: ");
 
             int optionMenu = scanner.nextInt();
@@ -329,19 +327,48 @@ public class Main {
                     break;
                 }
 
+                case 3: {
+
+                    System.out.println("Your playlists:");
+
+                    for (Playlist playlist : user.getPlaylists().values()) {
+                        System.out.println(playlist.getTitle());
+                    }
+
+                    System.out.println("\n\nPlaylist Name:");
+                    String playlistName = scanner.nextLine();
+
+                    if (!user.deletePlaylist(playlistName)) {
+
+                        while (!(user.deletePlaylist(playlistName))) {
+
+                            System.out.println(
+                                    "There is no playlist with this name, please try another one");
+
+                            System.out.print("Playlist name: ");
+                            playlistName = scanner.nextLine();
+                        }
+                    }
+
+                    UserStorage.saveUsers(users);
+
+                    System.out.println("The playlist was created successfully");
+                    break;
+                }
+
                 //option: access favorite musics
-                case 3:
+                case 4:
                     playlistMenu(user, user.getFavoriteMusics(), scanner, users, allMusics, true);
                     break;
 
                 //option: Search
-                case 4: {
+                case 5: {
                     searchMenu(user, scanner, users, allMusics);
                    break;
                 }
 
                 // Return
-                case 5:
+                case 6:
                     runningUserMenu = false;
                     break;
 
