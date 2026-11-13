@@ -352,7 +352,7 @@ public class Main {
 
                     UserStorage.saveUsers(users);
 
-                    System.out.println("The playlist was created successfully");
+                    System.out.println("The playlist was deleted successfully");
                     break;
                 }
 

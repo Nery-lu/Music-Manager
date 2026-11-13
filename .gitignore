@@ -1,6 +1,14 @@
 #User data - do not upload personal accounts
 /data/
 
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
 #Maven generated files
 target/
 !.mvn/wrapper/maven-wrapper.jar

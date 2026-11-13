@@ -13,12 +13,16 @@ public class PlaylistTest {
     private Playlist playlist;
     private Music music;
     private List<String> artists;
+    private Music music2;
+
 
     @BeforeEach
     void setUp() {
 
         playlist = new Playlist("testPlaylist", "That's a test playlist");
+        artists = new ArrayList<>();
         music = new Music("testMusic", artists, 100 );
+        music2 = new Music("testMusic", artists, 100);
 
     }
 
@@ -70,7 +74,6 @@ public class PlaylistTest {
 
     }
 
-    Music music2 = new Music("testMusic", artists, 100);
 
     @Test
     void shouldNotAddDuplicate() {

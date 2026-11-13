@@ -17,7 +17,7 @@ public class Music {
     public Music(String title, List<String> artist, int duration) {
         this.id = nextId++;
         this.title = title;
-        this.artist = new ArrayList<>();
+        this.artist = new ArrayList<>(artist);
         this.duration = duration;
         this.album = "";
         this.lyrics = "";

@@ -16,7 +16,7 @@ public class MusicCatalog {
         Map<String, ArrayList<Music>> allMusics = new HashMap<>();
 
         InputStream input =
-                MusicCatalog.class.getResourceAsStream("/music-library.json");
+                MusicCatalog.class.getResourceAsStream("/Music-Library.json");
 
         if (input == null) {
             throw new IllegalStateException(
