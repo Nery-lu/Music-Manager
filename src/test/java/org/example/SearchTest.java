@@ -48,7 +48,7 @@ public class SearchTest {
     @Test
     void shouldFindMusicByLyrics() {
 
-        search = "my darling can't you s";
+        search = "rain";
         Set<Music> expected = Set.of(allMusics.get("Raindance").get(0));
         Set<Music> musicsFound = MusicSearch.searchMusic(search, allMusics);
 

@@ -1,0 +1,135 @@
+[
+  {
+    "title": "Adore You",
+    "artist": ["Miley Cyrus"],
+    "duration": 278,
+    "lyrics":"Every little moment feels like something new\nI found a thousand reasons just to stay with you\nThrough every changing season, I'll be standing true"
+  },
+
+  {
+    "title": "Mercy",
+    "artist": ["Shawn Mendes"],
+    "duration": 209,
+    "lyrics": "My heart is tired of fighting through the night\nI'm searching for forgiveness in the fading light\nA little mercy might help me make things right"
+  },
+
+  {
+    "title": "Style",
+    "artist": ["Taylor Swift"],
+    "duration": 231,
+    "lyrics": "You walk into the room with a different kind of light\nSome stories never fade, no matter how we try\nWe keep returning to the colors of the night"
+  },
+
+  {
+    "title": "Habits",
+    "artist": ["Eminem", "White Gold"],
+    "duration": 298,
+    "lyrics": "Old habits keep on calling when the evening falls\nI'm trying to find the answers written on these walls\nSome memories are louder than the silence in the hall"
+  },
+
+  {
+    "title": "Don't Blame Me",
+    "artist": ["Taylor Swift"],
+    "duration": 236,
+    "lyrics": "Don't blame the stars for what we couldn't see\nI crossed a thousand oceans just to feel free\nLove has its own reasons, and so do you and me"
+  },
+
+  {
+    "title": "Like A Stone",
+    "artist": ["Audioslave"],
+    "duration": 294,
+    "lyrics": "A quiet heart beneath a sky of grey\nLike a stone, I watch the years drift away\nStill searching for a place where I can stay"
+  },
+
+  {
+    "title": "Stan",
+    "artist": ["Eminem", "Dido"],
+    "duration": 404,
+    "lyrics": "I wrote another letter that I never sent\nA thousand thoughts and hours that I can't forget\nThe walls are closing in on everything I meant"
+  },
+
+  {
+    "title": "Into You",
+    "artist": ["Ariana Grande"],
+    "duration": 244,
+    "lyrics": "The music gets louder whenever you're around\nI feel the whole world spinning without making a sound\nOne more step and I might leave the ground"
+  },
+
+  {
+    "title": "Everyday",
+    "artist": ["Ariana Grande", "Future"],
+    "duration": 194,
+    "lyrics": "Everyday brings another chance to start\nA little bit of sunshine can repair a broken heart\nThe simplest moments are the greatest work of art"
+  },
+
+  {
+    "title": "Apesar De Você",
+    "artist": ["Chico Buarque", "Milton Nascimento"],
+    "duration": 235,
+    "lyrics": "Apesar de você, ainda existe um novo dia\nA esperança continua acesa em cada esquina\nE ninguém pode apagar a força de quem caminha"
+  },
+
+  {
+    "title": "Cálice",
+    "artist": ["Chico Buarque"],
+    "duration": 241,
+    "lyrics": "Há palavras escondidas no silêncio da cidade\nUma voz que busca espaço para dizer a verdade\nMesmo em tempos de sombra, permanece a liberdade"
+  },
+
+
+  {
+    "title": "Ló Que Le Pasó a Hawaii",
+    "artist": ["Bad Bunny"],
+    "duration": 229,
+    "lyrics": "Las calles guardan historias que no pueden olvidar\nLa gente cuida sus raíces, su manera de soñar\nY aunque cambien los paisajes, siempre habrá un lugar"
+  },
+
+  {
+    "title": "Airplanes",
+    "artist": ["B.O.B", "Hayley Williams"],
+    "duration": 181,
+    "lyrics": "I keep looking at the sky, imagining a way\nMaybe all my dreams are closer than they seem today\nIf I could change one moment, I'd still choose wish right now"
+  },
+
+  {
+    "title": "Over Each Other",
+    "artist": ["Linkin Park"],
+    "duration": 170,
+    "lyrics": "We're speaking different languages in the same room\nEvery little argument makes the silence bloom\nI wish we could find a way to understand the truth"
+  },
+
+  {
+    "title": "Take What You Want From Me",
+    "artist": ["Post Malone", "Ozzy Osbourne", "Travis Scott"],
+    "duration": 230,
+    "lyrics": "You left behind the pieces of a life we couldn't save\nI gave you all my colors, but you turned them into grey\nNow I'm finding strength in everything I gave"
+  },
+
+  {
+    "title": "Raindance",
+    "artist": ["Dave", "Tems"],
+    "duration": 219,
+    "lyrics": "The rain is falling softly on the streets tonight\nWe dance beneath the windows and forget about the time\nYour smile makes every storm feel fine"
+  },
+
+  {
+    "title": "Sprinter",
+    "artist": ["Central Cee", "Dave"],
+    "duration": 229,
+    "lyrics": "Running through the city with the diamonds in the light\nNo time to look behind me, everything is moving fast\nI'm chasing every dream until the moment lasts"
+  },
+
+  {
+    "title": "Lover",
+    "artist": ["Taylor Swift", "Shawn Mendes"],
+    "duration": 221,
+    "lyrics":  "Twenty years or twenty seconds, time can disappear\nEvery road feels like home whenever you are near\nI'll keep choosing you through every changing year"
+  },
+
+  {
+    "title": "Nothin' On You",
+    "artist": ["B.O.B", "Bruno Mars"],
+    "duration": 269,
+    "lyrics": "I've seen a thousand faces in a thousand different places\nBut none can match the beauty that your presence embraces\nThe whole world shines, but you still light my days"
+  }
+]
