@@ -1,29 +1,32 @@
-package org.example;
+package model;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Music {
 
-    private static int nextId = 1;
-
     private int id;
     private String title;
-    private List<String> artist;
+    private List<Artist> artist;
     private int duration;
     private String album;
     private String lyrics;
 
-    public Music(String title, List<String> artist, int duration) {
-        this.id = nextId++;
+    public Music(String title, List<Artist> artist, String lyrics, int duration) {
         this.title = title;
         this.artist = new ArrayList<>(artist);
         this.duration = duration;
+        this.lyrics = lyrics;
         this.album = "";
-        this.lyrics = "";
     }
 
-    public Music() {
+    public Music(String title, String lyrics, int duration, int id) {
+        this.title = title;
+        this.artist = new ArrayList<>(artist);
+        this.duration = duration;
+        this.lyrics = lyrics;
+        this.album = "";
     }
 
     public int getId() {
@@ -34,7 +37,7 @@ public class Music {
         return this.title;
     }
 
-    public List<String> getArtist() {
+    public List<Artist> getArtist() {
         return this.artist;
     }
 
@@ -52,6 +55,10 @@ public class Music {
 
     public void setAlbum(String album) {
         this.album = album;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setLyrics (String lyrics) {

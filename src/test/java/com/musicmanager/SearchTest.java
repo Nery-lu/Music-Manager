@@ -1,5 +1,9 @@
-package org.example;
+package com.musicmanager;
 
+import importer.MusicCatalog;
+import model.Music;
+import model.Playlist;
+import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +18,14 @@ public class SearchTest {
     private Map<String, ArrayList<Music>> allMusics;
     private String search;
     private ArrayList<Music> musics;
+    private String email;
+    private String password;
+    private String name;
 
     @BeforeEach
     void setUp() {
 
-        user = new User();
+        user = new User(email, password, name);
         allMusics = new HashMap<>(MusicCatalog.loadMusicCatalog());
 
     }

@@ -1,5 +1,9 @@
-package org.example;
+package com.musicmanager;
 
+import model.Artist;
+import model.Music;
+import model.Playlist;
+import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +16,11 @@ public class PlaylistTest {
 
     private Playlist playlist;
     private Music music;
-    private List<String> artists;
+    private List<Artist> artists;
     private Music music2;
+    private String email;
+    private String name;
+    private String password;
 
 
     @BeforeEach
@@ -21,8 +28,8 @@ public class PlaylistTest {
 
         playlist = new Playlist("testPlaylist", "That's a test playlist");
         artists = new ArrayList<>();
-        music = new Music("testMusic", artists, 100 );
-        music2 = new Music("testMusic", artists, 100);
+        music = new Music("testMusic", artists, "lyrics", 100);
+        music2 = new Music("testMusic", artists, "lyrics", 100);
 
     }
 
@@ -56,7 +63,7 @@ public class PlaylistTest {
     @Test
     void shouldSetAsFavorite() {
 
-        User user = new User();
+        User user = new User(email, password, name);
 
         boolean result1 = user.getFavorites().removeMusic(music.getTitle());
 

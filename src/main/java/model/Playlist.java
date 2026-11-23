@@ -1,25 +1,35 @@
-package org.example;
-import java.util.*;
+package model;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class Playlist {
 
-    private static int nextId = 1;
-
     private int id;
+    private int userId;
     private String title;
     private Map<String, Music> musics;
     private String description;
     private int duration;
 
     public Playlist (String title, String description) {
-        this.id = nextId++;
         this.title = title;
         this.musics = new HashMap<>();
         this.description = description;
         this.duration = 0;
+    }
+
+    public Playlist (String title, String description, int id, int userId) {
+        this.userId = userId;
+        this.id = id;
+        this.musics = new HashMap<>();
+        this.description = description;
+        this.duration = 0;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {

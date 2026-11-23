@@ -71,8 +71,7 @@ The project includes a PostgreSQL database schema and a JDBC connection utility.
 - **JSON Persistence:** User data and the music catalog are currently stored and managed using JSON files.
 
 The PostgreSQL database structure and connection 
-setup are available, but full database integration for
-data persistence is not yet implemented 
+setup are available
 (It's what I'm working on at the moment);
 
 
@@ -97,7 +96,7 @@ cd Music-Manager
 From the project's root directory, run:
 
 ```powershell
-mvn exec:java "-Dexec.mainClass=org.example.Main"
+mvn exec:java "-Dexec.mainClass=com.musicmanager.Main"
 ```
 
 ## Running Tests

@@ -1,8 +1,8 @@
-package org.example;
+package model;
+
 import java.util.*;
 
 public class User {
-    private static int nextId = 1;
 
     private int id;
     private String name;
@@ -12,13 +12,22 @@ public class User {
     private Playlist favoriteMusics;
     private transient Queue<Music> queue;
 
-    public User() {
-        this.id = nextId++;
+    public User(String email, String passwordHash, String name) {
         this.playlists = new HashMap<>();
         this.favoriteMusics = new Playlist("Favorites", "Your favorite musics!");
-        this.name = "";
-        this.email = "";
-        this.passwordHash = "";
+        this.name = name;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.queue = new ArrayDeque<>();
+    }
+
+    public User(String email, String passwordHash,String name, int id) {
+        this.id = id;
+        this.playlists = new HashMap<>();
+        this.favoriteMusics = new Playlist("Favorites", "Your favorite musics!");
+        this.name = name;
+        this.email = email;
+        this.passwordHash = passwordHash;
         this.queue = new ArrayDeque<>();
     }
 
@@ -32,6 +41,10 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean createPlaylist(String title, String description) {

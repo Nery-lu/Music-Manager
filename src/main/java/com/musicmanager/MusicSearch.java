@@ -1,4 +1,7 @@
-package org.example;
+package com.musicmanager;
+
+import model.Artist;
+import model.Music;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,10 +52,10 @@ public class MusicSearch {
                 // Searching in artists: prefix only
                 if (music.getArtist() != null) {
 
-                    for (String artist : music.getArtist()) {
+                    for (Artist artist : music.getArtist()) {
 
                         if (artist == null
-                                || search.length() > artist.length()) {
+                                || search.length() > artist.getName().length()) {
                             continue;
                         }
 
@@ -60,7 +63,7 @@ public class MusicSearch {
 
                         for (int index = 0; index < search.length(); index++) {
 
-                            if (Character.toLowerCase(artist.charAt(index))
+                            if (Character.toLowerCase(artist.getName().charAt(index))
                                     != Character.toLowerCase(search.charAt(index))) {
 
                                 matches = false;

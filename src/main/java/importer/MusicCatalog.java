@@ -1,7 +1,8 @@
-package org.example;
+package importer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import model.Music;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -29,14 +30,15 @@ public class MusicCatalog {
             Gson gson = new Gson();
 
             Type musicListType =
-                    new TypeToken<ArrayList<Music>>() {
+                    new TypeToken<ArrayList<MusicJson>>() {
                     }.getType();
 
-            ArrayList<Music> songs =
+            ArrayList<MusicJson> songs =
                     gson.fromJson(reader, musicListType);
 
             if (songs != null) {
-                for (Music music : songs) {
+                for (MusicJson musicJson : songs) {
+                    Music music =MusicJsonToMusic.fromMusicJsonToMusic(musicJson);
                     addMusic(allMusics, music);
                 }
             }
