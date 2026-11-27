@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MusicArtistRepository {
 
@@ -54,6 +55,8 @@ public class MusicArtistRepository {
 
         return resultSet.next();
     }
+
+
 
     public boolean addArtistToMusic (Artist artist, Music music) throws SQLException {
         String sql = "INSERT INTO music_artists(music_id, artist_id) VALUES(?, ?)";

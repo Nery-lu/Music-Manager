@@ -49,6 +49,36 @@ public class FavoriteMusicRepository {
 
     }
 
+    public Music findMusicByTitle (String title, User user) throws SQLException {
+        String sql = """
+            SELECT music.*
+            FROM music
+            JOIN favorite_music
+            ON favorite_music.music_id = music_id
+            WHERE favorite_music.user_id = ?
+            AND music.title = ?
+            """;
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        statement.setInt(1, user.getId());
+        statement.setString(2, title);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+
+            String lyrics = resultSet.getString("lyrics");
+            int duration = resultSet.getInt("duration");
+            int id = resultSet.getInt("id");
+
+            return new Music(title, lyrics, duration, id);
+
+        }
+
+        return null;
+    }
+
     public boolean exists(Music music, User user) throws SQLException {
         String sql = "SELECT * FROM favorite_music WHERE user_id = ? AND music_id = ?";
 
@@ -62,7 +92,7 @@ public class FavoriteMusicRepository {
         return resultSet.next();
     }
 
-    public List<Music> findAllMusicsFromFavorites(User user) throws SQLException {
+    public List<Music> findAll(User user) throws SQLException {
         String sql = """
             SELECT music.*
             FROM music

@@ -70,6 +70,36 @@ public class PlaylistMusicRepository {
         return resultSet.next();
     }
 
+    public Music findMusicByTitle (String title, Playlist playlist) throws SQLException {
+        String sql = """
+            SELECT music.*
+            FROM music
+            JOIN playlist_music
+            ON playlist_music.music_id = music_id
+            WHERE playlist_music.playlist_id = ?
+            AND music.title = ?
+            """;
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        statement.setInt(1, playlist.getId());
+        statement.setString(2, title);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+
+            String lyrics = resultSet.getString("lyrics");
+            int duration = resultSet.getInt("duration");
+            int id = resultSet.getInt("id");
+
+            return new Music(title, lyrics, duration, id);
+
+        }
+
+        return null;
+    }
+
     public List<Music> findAllMusicsFromPlaylist(Playlist playlist) throws SQLException {
         String sql = """
             SELECT music.*

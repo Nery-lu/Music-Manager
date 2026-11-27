@@ -23,10 +23,11 @@ public class Music {
 
     public Music(String title, String lyrics, int duration, int id) {
         this.title = title;
-        this.artist = new ArrayList<>(artist);
+        this.artist = new ArrayList<>();
         this.duration = duration;
         this.lyrics = lyrics;
         this.album = "";
+        this.id = id;
     }
 
     public int getId() {

@@ -1,95 +1,141 @@
+
 package com.musicmanager;
 
-import model.Artist;
+import database.DatabaseConnection;
 import model.Music;
 import model.Playlist;
 import model.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import java.util.UUID;
 
-import java.util.ArrayList;
+import repositories.models.PlaylistRepository;
+import repositories.relationships.PlaylistMusicRepository;
+import repositories.models.UserRepository;
+
+import services.PlaylistServices;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlaylistTest {
 
-    private Playlist playlist;
-    private Music music;
-    private List<Artist> artists;
-    private Music music2;
-    private String email;
-    private String name;
-    private String password;
+    private Connection connection;
 
+    private UserRepository userRepository;
+    private PlaylistRepository playlistRepository;
+    private PlaylistMusicRepository playlistMusicRepository;
+
+    private PlaylistServices playlistServices;
+
+    private User user;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws SQLException {
 
-        playlist = new Playlist("testPlaylist", "That's a test playlist");
-        artists = new ArrayList<>();
-        music = new Music("testMusic", artists, "lyrics", 100);
-        music2 = new Music("testMusic", artists, "lyrics", 100);
+        connection = DatabaseConnection.getConnection();
 
+        userRepository = new UserRepository(connection);
+        playlistRepository = new PlaylistRepository(connection);
+        playlistMusicRepository = new PlaylistMusicRepository(connection);
+
+        playlistServices = new PlaylistServices(
+                playlistRepository,
+                playlistMusicRepository,
+                userRepository
+        );
+
+        String email = "playlist_test_" + UUID.randomUUID() + "@teste.com";
+        String password = "Testando1";
+        String username = "PlaylistTest";
+
+        user = new User(email, password, username);
+
+        int userId = userRepository.save(user);
+
+        assertTrue(userId > 0, "The test user must be saved successfully.");
+        assertEquals(userId, user.getId());
+    }
+
+    @AfterEach
+    void tearDown() throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            return;
+        }
+
+        try {
+            if (user != null && user.getId() > 0) {
+
+                List<Playlist> playlists = playlistRepository.findAll(user);
+
+                for (Playlist playlist : playlists) {
+
+                    List<Music> musics =
+                            playlistMusicRepository.findAllMusicsFromPlaylist(playlist);
+
+                    for (Music music : musics) {
+                        playlistMusicRepository.removeMusic(playlist, music);
+                    }
+
+                    playlistRepository.delete(playlist.getId(), user);
+                }
+
+                userRepository.delete(user.getId());
+            }
+
+        } finally {
+            connection.close();
+        }
     }
 
     @Test
-    void shouldAddMusic() {
-       boolean result = playlist.addMusic(music);
+    void shouldCreatePlaylist() throws SQLException {
 
-       assertTrue(result);
-       assertTrue(playlist.getMusics().containsKey(music.getTitle()));
+        boolean result = playlistServices.createPlaylist(
+                "testPlaylist",
+                "That's a test playlist",
+                user
+        );
 
-
+        assertTrue(result);
     }
 
     @Test
-    void shouldRemoveMusic() {
+    void shouldNotCreateDuplicatePlaylist() throws SQLException {
 
-        boolean result = playlist.removeMusic(music.getTitle());
+        playlistServices.createPlaylist(
+                "testPlaylist",
+                "That's a test playlist",
+                user
+        );
+
+        boolean result = playlistServices.createPlaylist(
+                "testPlaylist",
+                "Another description",
+                user
+        );
 
         assertFalse(result);
-        assertFalse(playlist.getMusics().containsKey(music.getTitle()));
-
-        playlist.addMusic(music);
-
-        boolean result2 = playlist.removeMusic(music.getTitle());
-
-        assertTrue(result2);
-        assertFalse(playlist.getMusics().containsKey(music.getTitle()));
-
     }
 
     @Test
-    void shouldSetAsFavorite() {
+    void shouldDeletePlaylist() throws SQLException {
 
-        User user = new User(email, password, name);
+        playlistServices.createPlaylist(
+                "testPlaylist",
+                "That's a test playlist",
+                user
+        );
 
-        boolean result1 = user.getFavorites().removeMusic(music.getTitle());
+        boolean result = playlistServices.deletePlaylist(
+                "testPlaylist",
+                user
+        );
 
-        assertFalse(result1);
-        assertFalse(user.getFavorites().getMusics().containsKey(music.getTitle()));
-
-        boolean settingAsFavorite = user.getFavorites().addMusic(music);
-
-        assertTrue(settingAsFavorite);
-        assertTrue(user.getFavorites().getMusics().containsKey(music.getTitle()));
-
-        user.getFavorites().removeMusic(music.getTitle());
-
-        assertFalse(user.getFavorites().getMusics().containsKey(music.getTitle()));
-
+        assertTrue(result);
     }
-
-
-    @Test
-    void shouldNotAddDuplicate() {
-        playlist.addMusic(music);
-
-        boolean result = playlist.addMusic(music2);
-
-        assertFalse(result);
-        assertTrue(playlist.getMusics().containsKey(music.getTitle()));
-    }
-
 }

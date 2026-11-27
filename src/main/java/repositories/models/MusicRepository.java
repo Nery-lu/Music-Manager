@@ -1,6 +1,6 @@
-
 package repositories.models;
 
+import model.Artist;
 import model.Music;
 
 import java.sql.Connection;
@@ -8,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MusicRepository {
 
@@ -113,43 +115,81 @@ public class MusicRepository {
         }
     }
 
-    public List<Music> findAll() throws SQLException {
-        String sql = "SELECT * FROM music";
+    public Map<Integer, Music> findAll() throws SQLException {
+
+        String sql = """
+                SELECT
+                    m.id AS music_id,
+                    m.title,
+                    m.lyrics,
+                    m.duration,
+                    a.id AS artist_id,
+                    a.name AS artist_name
+                FROM music m
+                LEFT JOIN music_artists ma
+                    ON m.id = ma.music_id
+                LEFT JOIN artists a
+                    ON ma.artist_id = a.id
+                ORDER BY m.id
+                """;
+
+        Map<Integer, Music> allMusics = new HashMap<>();
 
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
-            List<Music> result = new ArrayList<>();
-
             while (resultSet.next()) {
 
-                result.add(
-                        new Music(
-                                resultSet.getString("title"),
-                                resultSet.getString("lyrics"),
-                                resultSet.getInt("duration"),
-                                resultSet.getInt("id")
-                        )
-                );
+                int musicId = resultSet.getInt("music_id");
+
+                Music music = allMusics.get(musicId);
+
+                if (music == null) {
+
+                    music = new Music(
+                            resultSet.getString("title"),
+                            resultSet.getString("lyrics"),
+                            resultSet.getInt("duration"),
+                            musicId
+                    );
+
+                    music.setId(musicId);
+
+                    allMusics.put(musicId, music);
+                }
+
+                int artistId = resultSet.getInt("artist_id");
+
+                if (!resultSet.wasNull()) {
+
+                    Artist artist = new Artist(
+                            resultSet.getString("artist_name")
+                    );
+
+                    artist.setId(artistId);
+
+                    music.getArtist().add(artist);
+
+                }
             }
-
-            return result;
         }
+
+        return allMusics;
     }
 
-    public boolean update(Music music) throws SQLException {
-        String sql = "UPDATE music SET title = ?, lyrics = ?, duration = ? WHERE id = ?";
+public boolean update(Music music) throws SQLException {
+    String sql = "UPDATE music SET title = ?, lyrics = ?, duration = ? WHERE id = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+    try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, music.getTitle());
-            statement.setString(2, music.getLyrics());
-            statement.setInt(3, music.getDuration());
-            statement.setInt(4, music.getId());
+        statement.setString(1, music.getTitle());
+        statement.setString(2, music.getLyrics());
+        statement.setInt(3, music.getDuration());
+        statement.setInt(4, music.getId());
 
-            int rowsAffected = statement.executeUpdate();
+        int rowsAffected = statement.executeUpdate();
 
-            return rowsAffected > 0;
-        }
+        return rowsAffected > 0;
     }
+}
 }

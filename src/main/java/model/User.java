@@ -6,15 +6,11 @@ public class User {
 
     private int id;
     private String name;
-    private Map<String, Playlist> playlists;
     private String email;
     private String passwordHash;
-    private Playlist favoriteMusics;
     private transient Queue<Music> queue;
 
     public User(String email, String passwordHash, String name) {
-        this.playlists = new HashMap<>();
-        this.favoriteMusics = new Playlist("Favorites", "Your favorite musics!");
         this.name = name;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -23,8 +19,6 @@ public class User {
 
     public User(String email, String passwordHash,String name, int id) {
         this.id = id;
-        this.playlists = new HashMap<>();
-        this.favoriteMusics = new Playlist("Favorites", "Your favorite musics!");
         this.name = name;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -47,26 +41,6 @@ public class User {
         this.id = id;
     }
 
-    public boolean createPlaylist(String title, String description) {
-        Playlist playlist = new Playlist(title, description);
-
-        if (!(playlists.containsKey(title))) {
-            playlists.put(title, playlist);
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean deletePlaylist(String title) {
-        if(playlists.containsKey(title)) {
-            playlists.remove(title);
-            return true;
-        }
-
-        return false;
-    }
-
     public int getId() {
         return this.id;
     }
@@ -75,28 +49,12 @@ public class User {
         return this.name;
     }
 
-    public Map<String, Playlist> getPlaylists() {
-        return this.playlists;
-    }
-
-    public Collection<Playlist> listPlaylists() {
-        return this.playlists.values();
-    }
-
     public String getEmail() {
         return this.email;
     }
 
-    public Playlist getFavoriteMusics() {
-        return this.favoriteMusics;
-    }
-
     public String getPasswordHash() {
         return this.passwordHash;
-    }
-
-    public Playlist getFavorites() {
-        return this.favoriteMusics;
     }
 
     public Queue<Music> getQueue() {

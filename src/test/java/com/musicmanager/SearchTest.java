@@ -1,75 +1,107 @@
+
 package com.musicmanager;
 
-import importer.MusicCatalog;
+import model.Artist;
 import model.Music;
-import model.Playlist;
-import model.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import repositories.models.MusicRepository;
+
+import database.DatabaseConnection;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SearchTest {
 
-    private User user;
-    private Playlist playlist;
-    private Map<String, ArrayList<Music>> allMusics;
-    private String search;
-    private ArrayList<Music> musics;
-    private String email;
-    private String password;
-    private String name;
+    private Map<Integer, Music> allMusics;
+    private List<Music> expected;
+
+    private MusicRepository musicRepository;
+    private Connection connection;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws SQLException {
 
-        user = new User(email, password, name);
-        allMusics = new HashMap<>(MusicCatalog.loadMusicCatalog());
+        connection = DatabaseConnection.getConnection();
 
+        musicRepository = new MusicRepository(connection);
+
+        expected = new ArrayList<>();
+
+        allMusics = new HashMap<>(musicRepository.findAll());
+    }
+
+    @AfterEach
+    void tearDown() throws SQLException {
+
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
     }
 
     @Test
     void shouldFindMusicsByTitle() {
 
-        search = "Raindance";
-        musics = allMusics.get(search);
-        Set<Music> expected = new HashSet<>(musics);
-        Set<Music> musicsFound = MusicSearch.searchMusic(search, allMusics);
+        String search = "Raindance";
+
+        for (Music music : allMusics.values()) {
+            if (music.getTitle().equals(search)) {
+                expected.add(music);
+            }
+        }
+
+        List<Music> musicsFound = MusicSearch.searchMusic(search, allMusics);
 
         assertEquals(expected, musicsFound);
     }
 
     @Test
-    void shouldFindMusicsByArtists() {
+    void shouldFindMusicsByArtists() throws SQLException {
 
-        search = "Dave";
-        //We can do this because we don't have musics with the same name
-        Set<Music> expected = Set.of(allMusics.get("Sprinter").get(0), allMusics.get("Raindance").get(0));
-        Set<Music> musicsFound = MusicSearch.searchMusic(search, allMusics);
+        String search = "Dave";
 
-        assertEquals(expected, musicsFound);
+        Set<Integer> expectedIds = new HashSet<>();
+
+        expectedIds.add(musicRepository.findByTitle("Sprinter").getId());
+        expectedIds.add(musicRepository.findByTitle("Raindance").getId());
+
+        Set<Integer> foundIds = new HashSet<>();
+
+        List<Music> musicsFound = MusicSearch.searchMusic(search, allMusics);
+
+        for (Music music : musicsFound) {
+            foundIds.add(music.getId());
+        }
+
+        assertEquals(expectedIds, foundIds);
     }
 
     @Test
-    void shouldFindMusicByLyrics() {
+    void shouldFindMusicByLyrics() throws SQLException {
+        String search = "storm";
 
-        search = "rain";
-        Set<Music> expected = Set.of(allMusics.get("Raindance").get(0));
-        Set<Music> musicsFound = MusicSearch.searchMusic(search, allMusics);
+        Music expectedMusic = musicRepository.findByTitle("Raindance");
 
-        assertEquals(expected, musicsFound);
+        List<Music> musicsFound =
+                MusicSearch.searchMusic(search, allMusics);
+
+        assertEquals(1, musicsFound.size());
+        assertEquals(expectedMusic.getId(), musicsFound.get(0).getId());
     }
 
     @Test
     void shouldFindNothingWhenSearchIsNull() {
-        search = "";
-        Set<Music> expected = new HashSet<>();
-        Set<Music> musicsFound = MusicSearch.searchMusic(search, allMusics);
+
+        String search = "";
+
+        List<Music> musicsFound = MusicSearch.searchMusic(search, allMusics);
 
         assertEquals(expected, musicsFound);
     }
-
-
 }
