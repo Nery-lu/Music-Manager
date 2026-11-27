@@ -37,8 +37,7 @@ public class SearchMenu {
         System.out.println("\n\n===Search===");
         System.out.print("Type here your search: ");
         String search = scanner.nextLine();
-        Set<Music> musicFound = new HashSet<>(MusicSearch.searchMusic(search, allMusics));
-        List<Music> searchResult = new ArrayList<>(musicFound);
+        List<Music> searchResult = new ArrayList<>(MusicSearch.searchMusic(search, allMusics));
 
         if (!searchResult.isEmpty()) {
 

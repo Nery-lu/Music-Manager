@@ -1,35 +1,29 @@
+
 package com.musicmanager;
 
 import database.DatabaseConnection;
 import menus.*;
 import model.Music;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import repositories.models.ArtistRepository;
-import repositories.models.MusicRepository;
-import repositories.models.PlaylistRepository;
-import repositories.models.UserRepository;
-import repositories.relationships.FavoriteMusicRepository;
-import repositories.relationships.MusicArtistRepository;
-import repositories.relationships.PlaylistMusicRepository;
-import services.MusicServices;
-import services.PlaylistServices;
-import services.UserServices;
+import repositories.models.*;
+import repositories.relationships.*;
+import services.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
-
-/*    TODO: Play music     */
-
-/*    Where I'm at now: Just finished integrating the database, maybe will do the frontend  */
+import java.util.Map;
+import java.util.Scanner;
 
 public class Main {
 
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
+    private static final BCryptPasswordEncoder encoder =
+            new BCryptPasswordEncoder();
 
     public static void main(String[] args) {
+        run(new Scanner(System.in));
+    }
+
+    public static void run(Scanner scanner) {
 
         try (Connection connection = DatabaseConnection.getConnection()) {
 
@@ -38,13 +32,24 @@ public class Main {
             ArtistRepository artistRepository = new ArtistRepository(connection);
             PlaylistRepository playlistRepository = new PlaylistRepository(connection);
 
-            PlaylistMusicRepository playlistMusicRepository = new PlaylistMusicRepository(connection);
-            FavoriteMusicRepository favoriteMusicRepository = new FavoriteMusicRepository(connection);
-            MusicArtistRepository musicArtistRepository = new MusicArtistRepository(connection);
+            PlaylistMusicRepository playlistMusicRepository =
+                    new PlaylistMusicRepository(connection);
 
-            UserServices userServices = new UserServices(userRepository, encoder);
-            PlaylistServices playlistServices = new PlaylistServices(playlistRepository,
-                    playlistMusicRepository, userRepository);
+            FavoriteMusicRepository favoriteMusicRepository =
+                    new FavoriteMusicRepository(connection);
+
+            MusicArtistRepository musicArtistRepository =
+                    new MusicArtistRepository(connection);
+
+            UserServices userServices =
+                    new UserServices(userRepository, encoder);
+
+            PlaylistServices playlistServices =
+                    new PlaylistServices(
+                            playlistRepository,
+                            playlistMusicRepository,
+                            userRepository
+                    );
 
             MusicServices musicServices = new MusicServices(
                     connection,
@@ -55,12 +60,14 @@ public class Main {
 
             Map<Integer, Music> allMusics = musicRepository.findAll();
 
-            Scanner scanner = new Scanner(System.in);
+            PlaylistMenu playlistMenu =
+                    new PlaylistMenu(userServices, playlistServices);
 
+            FavoriteMenu favoriteMenu =
+                    new FavoriteMenu(userServices, playlistServices);
 
-            PlaylistMenu playlistMenu = new PlaylistMenu(userServices, playlistServices);
-            FavoriteMenu favoriteMenu = new FavoriteMenu(userServices, playlistServices);
-            SearchMenu searchMenu = new SearchMenu(playlistServices);
+            SearchMenu searchMenu =
+                    new SearchMenu(playlistServices);
 
             UserMenu userMenu = new UserMenu(
                     userServices,
@@ -84,18 +91,11 @@ public class Main {
                     playlistRepository,
                     playlistMusicRepository,
                     favoriteMusicRepository,
-                    playlistServices );
+                    playlistServices
+            );
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-      }
     }
-
-
-
-
-
-
-
-
+}

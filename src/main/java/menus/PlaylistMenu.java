@@ -48,8 +48,11 @@ public class PlaylistMenu {
             System.out.println("3 - Remove music");
             System.out.println("4 - Return");
 
-            if (!(playlistMusicRepository.findAllMusicsFromPlaylist(playlist).isEmpty())) {
-                for (Music music : playlistMusicRepository.findAllMusicsFromPlaylist(playlist)) {
+            List<Music> playlistMusics =
+                    playlistMusicRepository.findAllMusicsFromPlaylist(playlist);
+
+            if (!playlistMusics.isEmpty()) {
+                for (Music music : playlistMusics) {
                     System.out.println(music.getTitle());
                 }
             } else {

@@ -80,7 +80,7 @@ public class MainMenu {
             }
         }
 
-        scanner.close();
+
     }
 
 

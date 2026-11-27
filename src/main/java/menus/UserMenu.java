@@ -191,7 +191,12 @@ public class UserMenu {
 
                 //option: access favorite musics
                 case 4:
-                    //TODO: favoriteMenu
+                    favoriteMenu.showMenu(user,
+                            scanner,userRepository,
+                            playlistRepository,
+                            playlistMusicRepository,
+                            favoriteMusicRepository,
+                            allMusics);
                     break;
 
                 //option: Search

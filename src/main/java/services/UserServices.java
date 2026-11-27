@@ -25,7 +25,7 @@ public class UserServices {
         System.out.print("Email: ");
         email = scanner.nextLine();
 
-        while (!isValidEmail(email) || userRepository.findByEmail(email) == null) {
+        while (!isValidEmail(email) || userRepository.findByEmail(email) != null) {
 
             if (userRepository.findByEmail(email) == null) {
                 System.out.println(
@@ -74,9 +74,13 @@ public class UserServices {
 
         User user = new User(email, passwordHash, userName);
 
-        System.out.println("\nAccount created successfully!");
+        int userId = userRepository.save(user);
 
-        return userRepository.save(user);
+        if (userId != -1) {
+            System.out.println("\nAccount created successfully!");
+        }
+
+        return userId;
     }
 
     public User login (Scanner scanner) throws SQLException {

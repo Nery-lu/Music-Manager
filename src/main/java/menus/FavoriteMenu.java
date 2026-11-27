@@ -47,8 +47,10 @@ public class FavoriteMenu {
             System.out.println("3 - Remove music");
             System.out.println("4 - Return");
 
-            if (!favoriteMusicRepository.findAll(user).isEmpty()) {
-                for (Music music : favoriteMusicRepository.findAll(user)) {
+            List<Music> favorites = favoriteMusicRepository.findAll(user);
+
+            if (!favorites.isEmpty()) {
+                for (Music music : favorites) {
                     System.out.println(music.getTitle());
                 }
             } else {
@@ -107,7 +109,7 @@ public class FavoriteMenu {
                             if (favoriteMusicRepository.exists(selectedMusic, user)) {
 
                                 System.out.println(
-                                        "This music is already in the playlist"
+                                        "This music is already in your favorites"
                                 );
 
                             } else {
@@ -169,10 +171,8 @@ public class FavoriteMenu {
                                     Music musicConfirmation = favoriteMusicRepository.findMusicByTitle(removedMusic, user);
 
                                     if (musicConfirmation != null) {
-
-                                        removed = favoriteMusicRepository.removeFavorite(favoriteMusicRepository.findMusicByTitle(removedMusic, user),
-                                                user);
-
+                                        removed = favoriteMusicRepository.removeFavorite(
+                                                musicConfirmation, user);
                                     }
                                     break;
                                 }
