@@ -2,10 +2,12 @@
 package com.musicmanager;
 
 import database.DatabaseConnection;
+import model.Playlist;
 import model.User;
 import org.junit.jupiter.api.Test;
 import repositories.models.UserRepository;
 import repositories.relationships.FavoriteMusicRepository;
+import repositories.models.PlaylistRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -85,6 +87,45 @@ class FullApplicationTest {
             Scanner scanner = new Scanner(new StringReader(input));
 
             Main.run(scanner);
+
+            try (Connection connection = DatabaseConnection.getConnection()) {
+
+                UserRepository userRepository = new UserRepository(connection);
+                FavoriteMusicRepository favoriteRepository =
+                        new FavoriteMusicRepository(connection);
+                PlaylistRepository playlistRepository =
+                        new PlaylistRepository(connection);
+
+                User savedUser = userRepository.findByEmail(email);
+
+                assertNotNull(savedUser,
+                        "The user should be saved in the database.");
+
+                Playlist deletedPlaylist = new Playlist(
+                        "Test Playlist",
+                        "Test description",
+                        0,
+                        savedUser.getId()
+                );
+
+                assertTrue(
+                        favoriteRepository.findAll(savedUser).stream()
+                                .noneMatch(music ->
+                                        music.getTitle().equalsIgnoreCase("Raindance")),
+                        "Raindance should no longer be in the user's favorites."
+                );
+
+                // Verificação da playlist
+                assertNull(
+                        playlistRepository.findByTitle("Test Playlist", savedUser),
+                        "The playlist should have been deleted from the database."
+                );
+
+                assertTrue(
+                        playlistRepository.findAll(savedUser).isEmpty(),
+                        "The user should have no playlists remaining."
+                );
+            }
 
         } finally {
             System.setOut(originalOut);

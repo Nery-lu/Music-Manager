@@ -20,6 +20,7 @@ public class Playlist {
     }
 
     public Playlist (String title, String description, int id, int userId) {
+        this.title = title;
         this.userId = userId;
         this.id = id;
         this.description = description;

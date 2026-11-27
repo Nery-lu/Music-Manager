@@ -27,7 +27,7 @@ public class UserServices {
 
         while (!isValidEmail(email) || userRepository.findByEmail(email) != null) {
 
-            if (userRepository.findByEmail(email) == null) {
+            if (userRepository.findByEmail(email) != null) {
                 System.out.println(
                         "An account is already registered under this email, please try another one");
             } else {
